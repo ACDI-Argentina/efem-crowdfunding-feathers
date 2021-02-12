@@ -27,7 +27,7 @@ module.exports = function mongooseFactory() {
 
   logger.info('Using feathers mongo url', mongoUrl);
 
-  mongoose.connect(mongoUrl);
+  mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
   const db = mongoose.connection;
   db.on('error', err => logger.error('Could not connect to Mongo', err));
