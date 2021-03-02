@@ -15,6 +15,7 @@ module.exports = function User(app) {
       avatar: { type: String },
       linkedin: { type: String },
       url: { type: String },
+      emailValidated:{type:Boolean, default:false}
     },
     {
       timestamps: true,

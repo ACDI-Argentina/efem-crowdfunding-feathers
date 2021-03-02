@@ -7,6 +7,8 @@ const sanitizeAddress = require('../../hooks/sanitizeAddress');
 const setAddress = require('../../hooks/setAddress');
 const resolveFiles = require('../../hooks/resolveFiles');
 
+const { sendConfirmationMail } = require('../../lib/notifications/notifications');
+
 const normalizeId = () => context => {
   if (context.id) {
     context.id = toChecksumAddress(context.id);
@@ -42,13 +44,25 @@ const notifyParents = [
   },
 ];
 
-// TODO write a hook to prevent overwriting a non-zero giverId with 0
+const checkEmailChanged = async context => {
+  const userId = context.id;
+  const { email } = context.result;
+  const { email: beforeEmail } = context.params.before;
+  const emailMutated = email !== beforeEmail;
+
+  if (emailMutated) {
+    console.log(`Email mutated [${userId}]: ${email} `);
+    await context.service.patch(userId, { emailValidated: true });
+    sendConfirmationMail(context);
+  }
+  return context;
+};
 
 module.exports = {
   before: {
     all: [],
     find: [sanitizeAddress('address')],
-    get: [normalizeId(),commons.discardQuery('$disableStashBefore')],
+    get: [normalizeId(), commons.discardQuery('$disableStashBefore')],
     create: [commons.discard('_id'), ...address],
     update: [...restrict, commons.stashBefore()],
     patch: [...restrict, commons.stashBefore()],
@@ -61,7 +75,7 @@ module.exports = {
     get: [resolveFiles('avatar')],
     create: [resolveFiles('avatar')],
     update: [resolveFiles('avatar'), notifyOfChange(...notifyParents)],
-    patch: [resolveFiles('avatar'), notifyOfChange(...notifyParents)],
+    patch: [resolveFiles('avatar'), notifyOfChange(...notifyParents), checkEmailChanged],
     remove: [notifyOfChange(...notifyParents)],
   },
 
