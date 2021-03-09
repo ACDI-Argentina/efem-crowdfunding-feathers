@@ -19,5 +19,5 @@ jobs:
       with:
         file: docker/Dockerfile
         repository: acdi/give4forests-feathers
-        tags: ${{ github.sha }}, acdi/give4forests-feathers:1.0.0-beta.4
+        tags: acdi/give4forests-feathers:1.0.0-beta.4
         push: true
