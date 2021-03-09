@@ -14,7 +14,7 @@ RUN npm install pm2 -g
 
 ADD . .
 
-ADD docker/ecosystem.config.js .
+#ADD docker/ecosystem.config.js .
 
 EXPOSE 3030
 
