@@ -13,8 +13,12 @@ const customFormatter = winston.format((info, opts) => {
     splat.forEach(s => {
       message += ' ';
 
-      if (typeof s === 'object') {
-        message += s instanceof Error ? s.stack : JSON.stringify(s, null, 2);
+      if (typeof s === 'object') { //guarrrda, que si s es una instancia de model, puede tener una ref circular
+        try{
+          message += s instanceof Error ? s.stack : JSON.stringify(s, null, 3);
+        } catch(err){
+          //do nothing
+        }
       } else {
         message += s;
       }

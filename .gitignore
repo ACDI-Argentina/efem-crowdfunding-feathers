@@ -1,9 +1,10 @@
 ./build
 scripts/deployGiveth.js
-config
+
+!config/config.js
 !config/default.json
 !scripts/config
-ecosystem.config.js
+#ecosystem.config.js
 secrets
 
 # Logs

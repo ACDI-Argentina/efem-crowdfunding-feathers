@@ -152,7 +152,7 @@ function web3(options = {}) {
 
     app.setup = function newSetup(...args) {
       const result = _super.apply(this, args);
-      const challenger = new Challenger(app, web3Settings);
+      const challenger = new Challenger(app, web3Settings); 
 
       // Register 'web3' strategy with passport
       // debug('Registering web3 authentication strategy with options:', strategyOptions);

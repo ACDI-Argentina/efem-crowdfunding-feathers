@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 require('mongoose-long')(mongoose);
 require('./models/mongoose-bn')(mongoose);
 const logger = require('winston');
+const mongoConfig = require('../config/config');
 
 // mongoose query hook function that will
 // remove the key from the doc if the value is undefined
@@ -23,11 +24,11 @@ function unsetUndefined(next) {
 
 module.exports = function mongooseFactory() {
   const app = this;
-  const mongoUrl = app.get('mongodb');
+  const {mongodb: mongoUrl} = mongoConfig;
 
   logger.info('Using feathers mongo url', mongoUrl);
 
-  mongoose.connect(mongoUrl);
+  mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
   const db = mongoose.connection;
   db.on('error', err => logger.error('Could not connect to Mongo', err));
