@@ -1,7 +1,7 @@
 {
   "name": "@acdi/give4forests-feathers",
   "description": "Real-time json cache for blockchain data.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "",
   "main": "src",
   "keywords": [
